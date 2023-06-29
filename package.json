@@ -4,10 +4,8 @@
   "description": "Gestion de compagnie de transport",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node server.js",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "build": "npm i"
   },
   "author": "DJOBO N'dri François Carêm",
   "license": "ISC",
