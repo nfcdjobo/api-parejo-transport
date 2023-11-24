@@ -1,7 +1,6 @@
 const express = require('express');
 const nodemon = require('nodemon');
-const path=require('path')
-
+const path=require('path');
 const cors = require('cors');
 const app = express();
 app.use(express.json());
@@ -15,7 +14,7 @@ app.use((req, res, next) => {
   });
 app.use('/stockage', express.static(path.join(__dirname, 'stockage')));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3017;
 const routing = require('./routes/routing');
 app.use('/api/',routing);
 const {mongoose} = require('./dbconnecte');

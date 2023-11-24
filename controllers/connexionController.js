@@ -74,14 +74,12 @@ class ConnexionController{
         try {
             Passager.findOne({email: req.body.email, statut: 1})
             .then((user)=>{
-                console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',pass)
                 if(!user){
                     res.status(401).json({msg: "Email incorrect !"})
                 }else{
                  bcrypt.compare(req.body.password, user.password)
                  .then((pass) => {
-                    console.log('::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::',pass)
-                    if(!pass) return res.status(401).json({msg:"Mot de passe incorrect !!"})
+                    if(!pass) return res.status(401).json({msg:"Mot de passe incorrect !!"});
                     req.auth = {
                         user_id:user._id,
                         user_code: user.code,
@@ -97,6 +95,7 @@ class ConnexionController{
                 }
             })
             .catch(error=>{
+                console.log(error);
                 res.status(400).json({msg:`Ce compte n'existe pas. Cherchez à vous inscrire !`, error:error})
             })
         } catch (error) {

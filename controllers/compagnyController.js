@@ -15,7 +15,7 @@ class CompagnyController{
                             else{
                                 Compagny.find({}).then((all)=>{
                                     if(all.length > 0) {code = all.length+1;}
-                                    if(req.file){req.body.photo=req.file.path}
+                                    if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path}
                                     let compagny = new Compagny({... req.body, code: `COMPGI${code}`, createdAt:new Date(), updatedAt: new Date()});
                                     compagny.save()
                                     .then((add)=>{console.log(add); res.status(200).json({msg:"Inscription effectuée avec succès !", compagny: add})})
@@ -218,7 +218,7 @@ class CompagnyController{
                 Compagny.findOne({_id:req.body.id, statut:1})
                 .then((compagny)=>{
                     if(compagny){
-                        if(req.file){req.body.photo=req.file.path}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path}
                         Compagny.updateOne({_id:req.body.id, statut:1},{...req.body})
                         .then((newCompag)=>{
                             if(newCompag.modifiedCount === 0) return res.status(401).json({msg: "Aucune modifiction n'a été faite !"});

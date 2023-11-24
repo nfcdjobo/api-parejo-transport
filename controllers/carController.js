@@ -14,7 +14,7 @@ class CarController{
                         if(all.length > 0) {code = all.length+1;}
                         if(req.body.climatisation=="1") req.body.climatisation=true;
                         if(req.body.climatisation=="0") req.body.climatisation=false;
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         let newCar = new Car({... req.body, place:Number(req.body.place), code: `CAR${code}`, createdAt:new Date(), updatedAt:new Date()});
                         newCar.save()
                         .then((add)=>{console.log(add); res.status(200).json({msg:"car ajoutée avec succès !", car: add})})
@@ -176,14 +176,14 @@ class CarController{
 
     static async updateCar(req,res){
         try {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',33333333)
             Admin.findOne({_id:req.auth.user_id, code:req.auth.user_code, email:req.auth.user_email, statut:req.auth.statut})
             .then(admin=>{
                 if(!admin) return res.json({msg: "Veuillez-vous authentifier !"});
                 Car.findOne({_id:req.body.id, statut:1})
                 .then((car)=>{
                     if(car){
-                        if(req.file){req.body.photo=req.file.path;}
+                        delete req.body._id;
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Car.updateOne({_id: req.body.id, statut:1},{...req.body, updatedAt:new Date()})
                         .then((newCar)=>{
                             if(newCar.modifiedCount === 0) return res.status(401).json({msg: "Aucune modifiction n'a été faite !"});
@@ -221,7 +221,7 @@ class CarController{
                 Car.findOne({_id:req.body.id, statut:1})
                 .then((data)=>{
                     if(data){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Car.updateOne({_id: req.body.id, statut: 1},{statut:0, updatedAt:new Date()})
                         .then(()=>{
                             res.status(201).json({msg: "Suppression effectué avec succès !!"});

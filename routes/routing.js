@@ -29,14 +29,14 @@ Router.post('/loginPassager', ConnexionController.loginPassager);
 
 Router.get('/', IndexController.index);
 // Rooting of compagny
-Router.post('/saveCompagny', Telecharger, auth, CompagnyController.create);
+Router.post('/saveCompagny', auth, Telecharger, CompagnyController.create);
 Router.get('/getAllCompagny', CompagnyController.allCompagny);
 Router.get('/getByIdCompagny', auth, CompagnyController.getById);
 Router.get('/getByCodeCompagny', auth, CompagnyController.getByCode);
 Router.get('/getByNameCompagny', auth, CompagnyController.getByName);
 Router.get('/getByEmail1Compagny', auth, CompagnyController.getByEmail1);
 Router.get('/getByEmail2Compagny', auth, CompagnyController.getByEmail2);
-Router.post('/updateCompagny', Telecharger, auth, CompagnyController.updateCompagny);
+Router.post('/updateCompagny', auth, Telecharger, CompagnyController.updateCompagny);
 Router.post('/deleteCompagny', auth, CompagnyController.deleteCompagny);
 
 Router.post('/saveRole', auth, RoleController.create);
@@ -145,7 +145,7 @@ Router.post('/verifyMachiniste', ConnexionController.verifyMachiniste);
 Router.post('/verifyPassager', ConnexionController.verifyPassager);
 
 Router.post('/updatedAdmin', AdminController.updatedAdmin);
-Router.post('/updatedMachiniste', MachinisteController.updatedMachiniste);
+Router.post('/updatedMachiniste', Telecharger, auth, MachinisteController.updatedMachiniste);
 // Router.post('/updatedPassager', PassagerController.updatedPassager);
 
 

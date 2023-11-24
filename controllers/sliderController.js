@@ -14,7 +14,7 @@ class SliderController{
                             .then((allSlider)=>{
                                 if(allSlider.length > 0) {code = allSlider.length+1;}
                                 if(allSlider.length<4){
-                                    if(req.file){req.body.photo=req.file.path;}
+                                    if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                                     let newSlider = new Slider({... req.body, code: `SLIDER${code}`});
                                     newSlider.save()
                                     .then((add)=>{console.log(add); res.status(200).json({message:"Ligne ajoutée avec succès !", slider: add})})
@@ -66,7 +66,7 @@ class SliderController{
                 Slider.findOne({code:req.body.code, statut:1})
                 .then((slider)=>{
                     if(slider){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Slider.updateOne({_id: req.body.id, statut:1},{...req.body})
                         .then((newSlider)=>{
                             if(newSlider.modifiedCount === 0) return res.status(401).json({message: "Aucune modifiction n'a été faite !"});

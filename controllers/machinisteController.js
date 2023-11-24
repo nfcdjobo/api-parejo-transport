@@ -17,7 +17,7 @@ class MachinisteController{
                 if(req.body.telephone.length >= 10 && req.body.telephone.split('').every(item=>chiffre.includes(item))){
                     bcrypt.hash(req.body.password, 10)
                     .then((hash)=>{
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         let machiniste = new Machiniste({code: `MACHINISTE${code}`, ... req.body, password: hash, createdAt:new Date(), updatedAt:new Date()});
                         machiniste.save()
                         .then((add)=>{console.log(add); res.status(201).json({msg:`Inscription effectuée avec succès !`, admin: add})})
@@ -261,7 +261,7 @@ class MachinisteController{
                 Machiniste.findOne({_id:req.body.id})
                 .then((machiniste)=>{
                     if(machiniste){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Machiniste.updateOne({_id: req.body.id, statut:1},{...req.body,  updatedAt:new Date()})
                         .then((newMachiniste)=>{
                             if(newMachiniste.modifiedCount === 0) return res.status(401).json({msg: "Aucune modifiction n'a été faite !"});
@@ -298,7 +298,7 @@ class MachinisteController{
                 Machiniste.findOne({_id:req.body.id})
                 .then((machiniste)=>{
                     if(machiniste){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Machiniste.updateOne({_id: req.body.id, statut:1},{...req.body,  updatedAt:new Date()})
                         .then((newMachiniste)=>{
                             if(newMachiniste.modifiedCount === 0) return res.status(401).json({msg: "Aucune modifiction n'a été faite !"});

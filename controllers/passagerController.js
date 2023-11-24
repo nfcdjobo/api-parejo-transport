@@ -6,14 +6,15 @@ class PassagerController{
     static async create(req, res){
         try {
             let code = 1;
-            Passager.find({}).then((all)=>{
+            Passager.find({})
+            .then((all)=>{
                 if(all.length > 0) code = all.length+1;
             });
             Passager.findOne({email: req.body.email}).then(fin=>{
                 if(fin) return res.status(400).json({msg: `Ce passager est déjà ajouté.`});
                 bcrypt.hash(req.body.password, 10)
                 .then((hash)=>{
-                    if(req.file){req.body.photo=req.file.path;}
+                    if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                     let passager = new Passager({code: `PASSAGER${code}`, ... req.body, password: hash, createdAt:new Date(), updatedAt:new Date()});
                     passager.save()
                     .then((add)=>{console.log(add); res.status(200).json({msg:`Inscription effectuée avec succès !`, passager: add})})
@@ -257,7 +258,7 @@ class PassagerController{
                 Passager.findOne({_id:req.body.id, statut:1})
                 .then((passager)=>{
                     if(passager){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Passager.updateOne({_id: req.body.id, statut:1},{...req.body, updatedAt:new Date()})
                         .then((newPassager)=>{
                             if(newPassager.modifiedCount === 0) return res.status(400).json({msg: "Aucune modifiction n'a été faite !"});
@@ -296,7 +297,7 @@ class PassagerController{
                 Passager.findOne({_id:req.body.id, statut:1})
                 .then((passager)=>{
                     if(passager){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Passager.updateOne({_id: req.body.id, statut:1},{...req.body, updatedAt:new Date()})
                         .then((newPassager)=>{
                             if(newPassager.modifiedCount === 0) return res.status(400).json({msg: "Aucune modifiction n'a été faite !"});

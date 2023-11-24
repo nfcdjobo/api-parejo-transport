@@ -141,7 +141,7 @@ class RoleController{
                 Role.findOne({_id:req.body.id, statut:1})
                 .then((role)=>{
                     if(role){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Role.updateOne({_id: req.body.id, statut:1},{...req.body})
                         .then((newRole)=>{
                             if(newRole.modifiedCount === 0) return res.status(401).json({msg: "Aucune modifiction n'a été faite !"});

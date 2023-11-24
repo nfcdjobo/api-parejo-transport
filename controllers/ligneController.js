@@ -17,7 +17,7 @@ class LigneController{
                                 Ligne.findOne({villeA: req.body.villeA, villeB: req.body.villeB, statut:1})
                                 .then(line=>{
                                     if(line) res.status(401).json({msg: `Cette ligne est a été déjà ajoutée.`});
-                                    if(req.file){req.body.photo=req.file.path;}
+                                    if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                                     let newLigne = new Ligne({... req.body, code: `LIGNE${code}`, createdAt:new Date(), updatedAt:new Date()});
                                     newLigne.save()
                                     .then((add)=>{
@@ -223,7 +223,7 @@ class LigneController{
                 Ligne.findOne({_id:req.body.id, statut:1})
                 .then((ligne)=>{
                     if(ligne){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Ligne.updateOne({_id: req.body.id, statut:1},{...req.body})
                         .then((newLigne)=>{
                             if(newLigne.modifiedCount === 0) return res.status(400).json({msg: "Aucune modifiction n'a été faite !"});

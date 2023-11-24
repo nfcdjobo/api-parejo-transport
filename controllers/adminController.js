@@ -10,7 +10,7 @@ class AdminController{
                 if(fin) return res.status(400).json({msg: `Ce admininstrateur est déjà ajouté.`});
                 bcrypt.hash(req.body.password, 10)
                 .then((hash)=>{
-                    if(req.file){req.body.photo=req.file.path}
+                    if(req.file){req.body.photo = req.protocol+"://"+req.get('host')+"/"+req.file.path}
                     let admin = new Admin({code: `ADMIN${code}`, ... req.body, password: hash, createdAt:new Date(), updatedAt:new Date()});
                     admin.save()
                     .then((add)=>{
@@ -271,7 +271,7 @@ class AdminController{
                 Admin.findOne({_id:req.body.id, statut:1})
                 .then((user)=>{
                     if(user){
-                        if(req.file){req.body.photo=req.file.path;}
+                        if(req.file){req.body.photo=req.protocol+"://"+req.get('host')+"/"+req.file.path;}
                         Admin.updateOne({_id: req.body.id, statut:1},{...req.body, updatedAt:new Date()})
                         .then((newUser)=>{
                             if(newUser.modifiedCount === 0){console.log("Aucune modifiction n'a été faite !"); return res.status(401).json({msg: "Aucune modifiction n'a été faite !"})};
